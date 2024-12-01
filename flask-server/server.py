@@ -1,14 +1,15 @@
 from flask import Flask, request, jsonify
+from algorithm import add_numbers
 
 app = Flask(__name__)
 
-#members api route
+#api routes
 @app.route("/members")
 def members():
     return {'members':['M1','M2','M3','M4']}
 
 @app.route("/add", methods=["POST"])
-def add_numbers():
+def add():
     try:
         data = request.get_json()
         num1 = data.get('num1')
@@ -17,7 +18,8 @@ def add_numbers():
         if num1 is None or num2 is None:
             return jsonify({"error": "Both numbers are required"}), 400
 
-        result = num1 + num2
+        result = add_numbers(num1, num2)
+        
         return jsonify({"result": result})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
